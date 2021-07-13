@@ -1,0 +1,85 @@
+import { useState } from "react";
+
+const SimpleInput = () => {
+
+  const [enteredText, setEnteredText] = useState("");
+  // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+  const enteredNameIsValid = enteredText.trim() !== '';
+  const inputNameBox = !enteredNameIsValid && enteredNameTouched;
+  
+  // const [ formIsValid, setFormIsValid ] = useState(false);
+  let formIsValid = false;
+
+  // useEffect(() => {
+  //   if(enteredNameIsValid){
+  //     setFormIsValid(true);
+  //   } else {
+  //     setFormIsValid(false);
+  //   }
+  // }, [enteredNameIsValid]);
+    if(enteredNameIsValid){
+      formIsValid = true;
+    } else {
+      formIsValid = false;
+    }
+
+
+  const nameInputChangeHandler = (event) => {
+    setEnteredText(event.target.value);
+    // if (event.target.value.trim() !== "") {
+    //   setEnteredNameIsValid(true);
+    // }
+  };
+
+  const nameInputBlurHandler = () => {
+    setEnteredNameTouched(true);
+    // if (enteredText.trim() === "") {
+    //   setEnteredNameIsValid(false);
+    // }
+  }
+
+  const formSubmissionHandler = () => {
+    // event.perventDefault();
+    setEnteredNameTouched(true);
+
+    if (!enteredNameIsValid) {
+      return;
+    }
+    // setEnteredNameIsValid(true);
+
+    console.log(enteredText);
+
+    setEnteredText("");
+    setEnteredNameTouched(false);
+
+  };
+
+
+  const inputBoxEffect = inputNameBox
+    ? "form-control invalid"
+    : "form-control";
+
+  return (
+    <div>
+      <div className={inputBoxEffect}>
+        <label htmlFor="name">Your Name</label>
+        <input
+          type="text"
+          id="name"
+          value={enteredText}
+          onBlur={nameInputBlurHandler}
+          onChange={nameInputChangeHandler}
+        />
+        {inputNameBox && (
+          <p className="error-text">name must not empty!!</p>
+        )}
+      </div>
+      <div className="form-actions">
+        <button disabled={!formIsValid} onClick={formSubmissionHandler}>Submit</button>
+      </div>
+    </div>
+  );
+};
+
+export default SimpleInput;
